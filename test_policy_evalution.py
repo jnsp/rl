@@ -5,7 +5,7 @@ from slippery_walk_five import mdp
 
 
 def test_policy_evaluation_left_policy():
-    left_policy = lambda state: {s: 0 for s in mdp_slippery_walk_five.keys()}[state]
+    left_policy = [0, 0, 0, 0, 0, 0, 0]
     mdp_slippery_walk_five = mdp
 
     value_func = policy_evaluation(left_policy, mdp_slippery_walk_five)
@@ -15,7 +15,7 @@ def test_policy_evaluation_left_policy():
 
 
 def test_policy_evaluation_right_policy():
-    right_policy = lambda state: {s: 1 for s in mdp_slippery_walk_five.keys()}[state]
+    right_policy = [1, 1, 1, 1, 1, 1, 1]
     mdp_slippery_walk_five = mdp
 
     value_func = policy_evaluation(right_policy, mdp_slippery_walk_five)

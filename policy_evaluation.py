@@ -3,25 +3,25 @@ import numpy as np
 
 def policy_evaluation(policy, mdp, gamma=1.0, epsilon=1e-10):
     state_space = mdp.keys()
-    prev_values = np.zeros(len(state_space))
+    prev_state_values = np.zeros(len(state_space))
 
     while True:
-        values = np.zeros(len(state_space))
+        state_values = np.zeros(len(state_space))
 
         for state in state_space:
-            action = policy(state)
+            action = policy[state]
             transitions = mdp[state][action]
-            values[state] = value_of_state(transitions, prev_values, gamma)
+            state_values[state] = state_value(transitions, prev_state_values, gamma)
 
-        if converged(prev_values, values, epsilon):
+        if converged(prev_state_values, state_values, epsilon):
             break
 
-        prev_values = values
+        prev_state_values = state_values
 
-    return values
+    return state_values
 
 
-def value_of_state(transitions, prev_values, gamma):
+def state_value(transitions, prev_values, gamma):
     value = 0
 
     for prob, next_state, reward, done in transitions:
