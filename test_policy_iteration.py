@@ -31,7 +31,9 @@ def test_policy_evaluation_right_policy():
 
 
 def test_policy_improvement():
-    values = [0, 0.00274725, 0.01098901, 0.03571429, 0.10989011, 0.33241758, 0]
+    values = np.array(
+        [0, 0.00274725, 0.01098901, 0.03571429, 0.10989011, 0.33241758, 0]
+    )
     mdp = MDP(slippery_walk_five)
 
     policy = policy_improvement(values, mdp)

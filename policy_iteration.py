@@ -1,7 +1,11 @@
 import numpy as np
 
+from mdp import MDP
 
-def value_iteration(mdp, gamma=1.0, epsilon=1e-10):
+
+def value_iteration(
+    mdp: MDP, gamma: float = 1.0, epsilon: float = 1e-10
+) -> tuple[np.ndarray, list[int]]:
     state_values = mdp.zero_state_values()
 
     while True:
@@ -24,7 +28,9 @@ def value_iteration(mdp, gamma=1.0, epsilon=1e-10):
     return state_values, policy
 
 
-def policy_iteration(mdp, gamma=1.0, epsilon=1e-10):
+def policy_iteration(
+    mdp: MDP, gamma: float = 1.0, epsilon: float = 1e-10
+) -> tuple[np.ndarray, list[int]]:
     state_values = mdp.zero_state_values()
     policy = mdp.random_policy()
 
@@ -40,7 +46,9 @@ def policy_iteration(mdp, gamma=1.0, epsilon=1e-10):
     return state_values, new_policy
 
 
-def policy_evaluation(policy, mdp, gamma=1.0, epsilon=1e-10):
+def policy_evaluation(
+    policy: list[int], mdp: MDP, gamma: float = 1.0, epsilon: float = 1e-10
+) -> np.ndarray:
     prev_state_values = mdp.zero_state_values()
 
     while True:
@@ -59,7 +67,7 @@ def policy_evaluation(policy, mdp, gamma=1.0, epsilon=1e-10):
     return state_values
 
 
-def policy_improvement(state_values, mdp, gamma=1.0):
+def policy_improvement(state_values: np.ndarray, mdp: MDP, gamma=1.0) -> list[int]:
     action_values = mdp.zero_action_values()
 
     for state in mdp.state_space:
@@ -71,7 +79,9 @@ def policy_improvement(state_values, mdp, gamma=1.0):
     return policy
 
 
-def value(transitions, values, gamma):
+def value(
+    transitions: list[tuple[float, int, float, bool]], values: np.ndarray, gamma: float
+) -> float:
     value = 0
 
     for prob, next_state, reward, done in transitions:
@@ -82,5 +92,5 @@ def value(transitions, values, gamma):
     return value
 
 
-def converged(previous, current, epsilon):
+def converged(previous: np.ndarray, current: np.ndarray, epsilon: float) -> bool:
     return np.max(np.abs(previous - current)) < epsilon
