@@ -1,6 +1,11 @@
 import numpy as np
 
-from policy_iteration import policy_evaluation, policy_improvement, policy_iteration
+from policy_iteration import (
+    policy_evaluation,
+    policy_improvement,
+    policy_iteration,
+    value_iteration,
+)
 from slippery_walk_five import mdp
 
 
@@ -36,6 +41,17 @@ def test_policy_iteration():
     mdp_slippery_walk_five = mdp
 
     state_values, policy = policy_iteration(mdp_slippery_walk_five)
+    expected_policy = [0, 1, 1, 1, 1, 1, 0]
+    expected = [0, 0.66758242, 0.89010989, 0.96428571, 0.98901099, 0.9972527, 0]
+
+    assert policy == expected_policy
+    np.testing.assert_array_almost_equal(state_values, expected)
+
+
+def test_value_iteration():
+    mdp_slippery_walk_five = mdp
+
+    state_values, policy = value_iteration(mdp_slippery_walk_five)
     expected_policy = [0, 1, 1, 1, 1, 1, 0]
     expected = [0, 0.66758242, 0.89010989, 0.96428571, 0.98901099, 0.9972527, 0]
 

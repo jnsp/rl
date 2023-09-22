@@ -3,6 +3,31 @@ import random
 import numpy as np
 
 
+def value_iteration(mdp, gamma=1.0, epsilon=1e-10):
+    state_space = mdp.keys()
+    action_space = mdp[0].keys()
+    state_values = np.zeros(len(state_space))
+
+    while True:
+        action_values = np.zeros((len(state_space), len(action_space)))
+
+        for state in state_space:
+            for action in action_space:
+                transitions = mdp[state][action]
+                action_values[state][action] = value(transitions, state_values, gamma)
+
+        new_state_values = np.max(action_values, axis=1)
+
+        if converged(state_values, new_state_values, epsilon):
+            break
+
+        state_values = new_state_values
+
+    policy = list(np.argmax(action_values, axis=1))
+
+    return state_values, policy
+
+
 def policy_iteration(mdp, gamma=1.0, epsilon=1e-10):
     state_space = mdp.keys()
     action_space = list(mdp[0].keys())
