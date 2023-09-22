@@ -1,4 +1,4 @@
-mdp = {
+slippery_walk_five = {
     0: {
         0: [(1.0, 0, 0, True)],
         1: [(1.0, 0, 0, True)],

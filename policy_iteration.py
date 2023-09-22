@@ -1,18 +1,14 @@
-import random
-
 import numpy as np
 
 
 def value_iteration(mdp, gamma=1.0, epsilon=1e-10):
-    state_space = mdp.keys()
-    action_space = mdp[0].keys()
-    state_values = np.zeros(len(state_space))
+    state_values = mdp.zero_state_values()
 
     while True:
-        action_values = np.zeros((len(state_space), len(action_space)))
+        action_values = mdp.zero_action_values()
 
-        for state in state_space:
-            for action in action_space:
+        for state in mdp.state_space:
+            for action in mdp.action_space:
                 transitions = mdp[state][action]
                 action_values[state][action] = value(transitions, state_values, gamma)
 
@@ -29,10 +25,8 @@ def value_iteration(mdp, gamma=1.0, epsilon=1e-10):
 
 
 def policy_iteration(mdp, gamma=1.0, epsilon=1e-10):
-    state_space = mdp.keys()
-    action_space = list(mdp[0].keys())
-    state_values = np.zeros(len(state_space))
-    policy = random.choices(action_space, k=len(state_space))
+    state_values = mdp.zero_state_values()
+    policy = mdp.random_policy()
 
     while True:
         state_values = policy_evaluation(policy, mdp, gamma, epsilon)
@@ -47,13 +41,12 @@ def policy_iteration(mdp, gamma=1.0, epsilon=1e-10):
 
 
 def policy_evaluation(policy, mdp, gamma=1.0, epsilon=1e-10):
-    state_space = mdp.keys()
-    prev_state_values = np.zeros(len(state_space))
+    prev_state_values = mdp.zero_state_values()
 
     while True:
-        state_values = np.zeros(len(state_space))
+        state_values = mdp.zero_state_values()
 
-        for state in state_space:
+        for state in mdp.state_space:
             action = policy[state]
             transitions = mdp[state][action]
             state_values[state] = value(transitions, prev_state_values, gamma)
@@ -67,12 +60,10 @@ def policy_evaluation(policy, mdp, gamma=1.0, epsilon=1e-10):
 
 
 def policy_improvement(state_values, mdp, gamma=1.0):
-    state_space = mdp.keys()
-    action_space = mdp[0].keys()
-    action_values = np.zeros((len(state_space), len(action_space)))
+    action_values = mdp.zero_action_values()
 
-    for state in state_space:
-        for action in action_space:
+    for state in mdp.state_space:
+        for action in mdp.action_space:
             transitions = mdp[state][action]
             action_values[state][action] = value(transitions, state_values, gamma)
 
