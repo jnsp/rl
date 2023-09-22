@@ -9,7 +9,7 @@ def policy_evaluation(policy, mdp, gamma=1.0, epsilon=1e-10):
         values = np.zeros(len(state_space))
 
         for state in state_space:
-            action = policy[state]
+            action = policy(state)
             transitions = mdp[state][action]
             values[state] = value_of_state(transitions, prev_values, gamma)
 
