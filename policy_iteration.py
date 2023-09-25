@@ -82,6 +82,7 @@ def policy_improvement(state_values: np.ndarray, mdp: MDP, gamma=1.0) -> list[in
 def value(
     transitions: list[tuple[float, int, float, bool]], values: np.ndarray, gamma: float
 ) -> float:
+    # The Bellman equation
     value = 0
 
     for prob, next_state, reward, done in transitions:
