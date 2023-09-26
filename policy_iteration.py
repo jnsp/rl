@@ -13,8 +13,9 @@ def value_iteration(
 
         for state in mdp.state_space:
             for action in mdp.action_space:
-                transitions = mdp[state][action]
-                action_values[state][action] = value(transitions, state_values, gamma)
+                action_values[state][action] = value(
+                    mdp, state, action, state_values, gamma
+                )
 
         new_state_values = np.max(action_values, axis=1)
 
@@ -56,8 +57,7 @@ def policy_evaluation(
 
         for state in mdp.state_space:
             action = policy[state]
-            transitions = mdp[state][action]
-            state_values[state] = value(transitions, prev_state_values, gamma)
+            state_values[state] = value(mdp, state, action, prev_state_values, gamma)
 
         if converged(prev_state_values, state_values, epsilon):
             break
@@ -72,24 +72,20 @@ def policy_improvement(state_values: np.ndarray, mdp: MDP, gamma=1.0) -> list[in
 
     for state in mdp.state_space:
         for action in mdp.action_space:
-            transitions = mdp[state][action]
-            action_values[state][action] = value(transitions, state_values, gamma)
+            action_values[state][action] = value(
+                mdp, state, action, state_values, gamma
+            )
 
     policy = list(np.argmax(action_values, axis=1))
     return policy
 
 
-def value(
-    transitions: list[tuple[float, int, float, bool]], values: np.ndarray, gamma: float
-) -> float:
-    # The Bellman equation
+def value(mdp: MDP, state: int, action: int, values: np.ndarray, gamma: float):
     value = 0
-
-    for prob, next_state, reward, done in transitions:
-        discounted_value_of_next_state = gamma * values[next_state] * (not done)
+    for transition_probability, next_state, reward, is_terminal in mdp[state][action]:
+        discounted_value_of_next_state = gamma * values[next_state] * (not is_terminal)
         return_value = reward + discounted_value_of_next_state
-        value += prob * return_value
-
+        value += transition_probability * return_value
     return value
 
 
