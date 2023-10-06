@@ -6,7 +6,7 @@ from mdp import MDP
 def value_iteration(
     mdp: MDP, gamma: float = 1.0, epsilon: float = 1e-10
 ) -> tuple[np.ndarray, list[int]]:
-    state_values = mdp.zero_state_values()
+    prev_state_values = mdp.zero_state_values()
 
     while True:
         action_values = mdp.zero_action_values()
@@ -14,15 +14,15 @@ def value_iteration(
         for state in mdp.state_space:
             for action in mdp.action_space:
                 action_values[state][action] = value(
-                    mdp, state, action, state_values, gamma
+                    mdp, state, action, prev_state_values, gamma
                 )
 
-        new_state_values = np.max(action_values, axis=1)
+        state_values = np.max(action_values, axis=1)
 
-        if converged(state_values, new_state_values, epsilon):
+        if converged(prev_state_values, state_values, epsilon):
             break
 
-        state_values = new_state_values
+        prev_state_values = state_values
 
     policy = list(np.argmax(action_values, axis=1))
 
