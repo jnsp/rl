@@ -1,13 +1,13 @@
 import numpy as np
 
-from mdp import MDP
-from policy_iteration import (
+from pi.mdp import MDP
+from pi.policy_iteration import (
     policy_evaluation,
     policy_improvement,
     policy_iteration,
     value_iteration,
 )
-from transitions import frozen_lake_gridworld, slippery_walk_five
+from pi.transitions import frozen_lake_gridworld, slippery_walk_five
 
 
 def test_policy_evaluation_left_policy():

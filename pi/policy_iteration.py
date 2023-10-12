@@ -1,6 +1,6 @@
 import numpy as np
 
-from mdp import MDP
+from pi.mdp import MDP
 
 
 def value_iteration(

@@ -1,5 +1,5 @@
-from mdp import MDP
-from transitions import frozen_lake_gridworld, slippery_walk_five
+from pi.mdp import MDP
+from pi.transitions import frozen_lake_gridworld, slippery_walk_five
 
 
 def test_mdp_slippery_walk_five():
