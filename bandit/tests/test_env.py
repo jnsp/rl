@@ -16,6 +16,11 @@ def test_valid_pay_probs():
         BanditEnv(2, [-1, 0], [1, 1])
 
 
+def test_valid_reward_params():
+    with pytest.raises(ValueError, match="Sigma must be non-negative"):
+        BanditEnv(2, [1, 0], [(1, -1), (1, -1)])
+
+
 def test_simple_bandit():
     bandit = BanditEnv(2, [1, 0], [1, 1])
     rewards = [bandit.step(0) for _ in range(100)]

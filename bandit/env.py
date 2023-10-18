@@ -1,5 +1,4 @@
 import random
-from collections.abc import Iterable
 
 
 class BanditEnv:
@@ -12,13 +11,14 @@ class BanditEnv:
     ):
         self._check_validity_number_of_arms(n_arms, pay_probs, reward_params)
         self._check_validity_pay_probs(pay_probs)
+        self._check_validity_reward_params(reward_params)
 
         self._n_arms = n_arms
         self._pay_probs = pay_probs
         self._reward_params = self._add_sigma(reward_params)
         self._rng = random.Random(seed)
 
-    def _check_validity_number_of_arms(self, n_arms, pay_probs, reward_params):
+    def _check_validity_number_of_arms(self, n_arms, pay_probs, reward_params) -> None:
         n_pay_dist = len(pay_probs)
         n_reward_dist = len(reward_params)
 
@@ -28,9 +28,16 @@ class BanditEnv:
                 "and length of reward_dist ({n_reward_dist}) must be equal"
             )
 
-    def _check_validity_pay_probs(self, pay_probs):
+    def _check_validity_pay_probs(self, pay_probs) -> None:
         if not all(0 <= p <= 1 for p in pay_probs):
             raise ValueError("pay_dist must be a list of floats between 0 and 1")
+
+    def _check_validity_reward_params(self, reward_params) -> None:
+        for params in reward_params:
+            if isinstance(params, tuple):
+                _, sigma = params
+                if sigma < 0:
+                    raise ValueError("Sigma must be non-negative")
 
     def _add_sigma(
         self, reward_params: list[float] | list[tuple[float, float]]
