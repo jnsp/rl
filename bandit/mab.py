@@ -1,7 +1,9 @@
 import numpy as np
 
+from bandit.env import BanditEnv
 
-def pure_exploitation(env, n_episodes=5000):
+
+def pure_exploitation(env: BanditEnv, n_episodes: int = 5000) -> tuple[np.ndarray, ...]:
     action_values = np.zeros(env.n_arms)
     n_trials = np.zeros(env.n_arms)
     action_values_episodes = np.empty((n_episodes, env.n_arms))
@@ -9,7 +11,7 @@ def pure_exploitation(env, n_episodes=5000):
     actions_episodes = np.empty(n_episodes, dtype=int)
 
     for e in range(n_episodes):
-        action = np.argmax(action_values)
+        action = int(np.argmax(action_values))
         reward = env.step(action)
 
         n_trials[action] += 1
