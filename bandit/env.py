@@ -57,6 +57,10 @@ class BanditEnv:
     def _does_pay(self, action: int) -> bool:
         return self._rng.random() < self._pay_probs[action]
 
+    @property
+    def n_arms(self) -> int:
+        return self._n_arms
+
     def step(self, action: int):
         mu, sigma = self._reward_params[action]
         reward = self._rng.normalvariate(mu, sigma) if self._does_pay(action) else 0

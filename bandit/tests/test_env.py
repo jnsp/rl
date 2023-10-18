@@ -33,6 +33,11 @@ def test_prob_bandit():
     assert sum(rewards) == pytest.approx(5000, rel=0.05)
 
 
+def test_get_n_arms():
+    bandit = BanditEnv(2, [1, 0], [1, 1])
+    assert bandit.n_arms == 2
+
+
 def test_reward_from_normal_dist():
     bandit = BanditEnv(2, [1, 0], [(1, 1), (1, 1)], seed=1012)
     rewards = [bandit.step(0) for _ in range(5)]
